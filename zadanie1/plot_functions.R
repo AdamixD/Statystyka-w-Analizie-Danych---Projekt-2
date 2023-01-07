@@ -105,7 +105,7 @@ plot_actual_increase_lines_two_types <-  function(data, title1, title2) {
 }
 
 
-plot_histogram_single <- function(data, title) {
+plot_histogram_diff_single <- function(data, title) {
   for (c in unique(data$zone)) {
     sub_data <- data |> filter(zone == c)
     mean_val <- mean(sub_data$difference, na.rm=TRUE)
@@ -130,20 +130,27 @@ plot_histogram_single <- function(data, title) {
   }
 }
 
-plot_histogram_multiple <- function(data, title) {
-  data |>
-    ggplot( aes(x=difference, fill=country, color=country)) +
-    geom_histogram(alpha=0.3, bins=30, position = 'identity') +
-    scale_color_viridis(discrete = TRUE, alpha=0.6) +
-    scale_fill_viridis(discrete = TRUE) +
-    xlab("Różnica inflacji") + ylab("Liczba wystąpień") +
-    ggtitle(title) +
-    theme_ipsum() +
-    theme(
-      legend.title = element_blank(),
-      legend.text = element_text(size=12, face="bold"),
-      plot.title = element_text(size=18),
-      axis.title.x = element_text(size=12, face="bold"),
-      axis.title.y = element_text(size=12, face="bold"),
-    )
+plot_histogram_single <- function(data, title) {
+  for (c in unique(data$origin)) {
+    sub_data <- data |> filter(origin == c)
+    mean_val <- mean(sub_data$inflation, na.rm=TRUE)
+    sd_val <- sd(sub_data$inflation, na.rm=TRUE)
+    plot <- sub_data |>
+      ggplot(aes(inflation, group=1, label=c)) +
+      geom_histogram(aes(y=..density..), binwidth=0.5, alpha=0.7, fill="#DCE319FF", color="#95D840FF") +
+      # geom_density(alpha = 0.2, fill="#481567FF", color="#8b1a89") +
+      stat_function(fun = dnorm, n = 101, args = list(mean = mean_val, sd = sd_val), color="#aa1836", size=1) +
+      ggtitle(label=paste(title, " - ", c), subtitle=paste("Rozkład normalny N(", signif(mean_val, 4), ", ", signif(sd_val*sd_val, 4), ")")) +
+      xlab("Różnica inflacji") + ylab( "Gęstość") +
+      theme_ipsum() +
+      theme(
+        legend.title = element_blank(),
+        legend.text = element_text(size=12, face="bold"),
+        plot.title = element_text(size=18),
+        plot.subtitle = element_text(size=12, face="bold"),
+        axis.title.x = element_text(size=12, face="bold"),
+        axis.title.y = element_text(size=12, face="bold"),
+      )
+    print(plot)
+  }
 }
