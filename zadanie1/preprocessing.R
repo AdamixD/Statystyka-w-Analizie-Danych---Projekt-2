@@ -82,8 +82,8 @@ inflation_tidy_origin <- rbind(eurozone_countries_inflation_tidy_origin,
 
 
 ### Creating ranges of intervals
-start <- as.Date("01/01/2005", "%d/%m/%Y")
-end <- as.Date("01/01/2018", "%d/%m/%Y")
+start <- as.Date("01/01/2012", "%d/%m/%Y")
+end <- as.Date("01/01/2016", "%d/%m/%Y")
 
 
 ### Split data to intervals

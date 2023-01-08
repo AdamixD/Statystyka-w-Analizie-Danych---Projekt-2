@@ -137,7 +137,7 @@ plot_histogram_single <- function(data, title) {
     sd_val <- sd(sub_data$inflation, na.rm=TRUE)
     plot <- sub_data |>
       ggplot(aes(inflation, group=1, label=c)) +
-      geom_histogram(aes(y=..density..), binwidth=0.5, alpha=0.7, fill="#DCE319FF", color="#95D840FF") +
+      geom_histogram(aes(y=..density..), binwidth=0.3, alpha=0.7, fill="#DCE319FF", color="#95D840FF") +
       # geom_density(alpha = 0.2, fill="#481567FF", color="#8b1a89") +
       stat_function(fun = dnorm, n = 101, args = list(mean = mean_val, sd = sd_val), color="#aa1836", size=1) +
       ggtitle(label=paste(title, " - ", c), subtitle=paste("Rozkład normalny N(", signif(mean_val, 4), ", ", signif(sd_val*sd_val, 4), ")")) +
